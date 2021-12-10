@@ -1,0 +1,10 @@
+HOST: localhost
+PORT: 8000
+RELOAD: true
+
+MONGO:
+  HOST: localhost
+  PORT: 27017
+  USERNAME: root
+  PASSWORD: root
+  DATABASE: movies
