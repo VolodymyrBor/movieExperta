@@ -1,7 +1,7 @@
 from datetime import date
 from beanie import Document
 
-from database.engine import engine
+from app.database.engine import engine
 
 
 @engine.register_model

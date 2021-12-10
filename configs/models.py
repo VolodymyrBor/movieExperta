@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from url import URL
+from app.url import URL
 
 
 class MongoConfig(BaseModel):

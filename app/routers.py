@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from database.models import Movie
+from app.database.models import Movie
 
 router = APIRouter(tags=['movie'], prefix='/movies')
 
