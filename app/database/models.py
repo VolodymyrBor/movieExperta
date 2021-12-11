@@ -1,4 +1,3 @@
-import datetime
 import datetime as dt
 from typing import Optional, Any
 
@@ -10,13 +9,13 @@ from app.database.engine import engine
 
 class CreateDirector(BaseModel):
     name: str
-    birthday: datetime.date
+    birthday: dt.date
     country: str
 
 
 class UpdateDirector(CreateDirector):
     name: Optional[str] = None
-    birthday: Optional[datetime.date] = None
+    birthday: Optional[dt.date] = None
     country: Optional[str] = None
 
 
