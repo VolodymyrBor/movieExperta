@@ -17,6 +17,7 @@ class CreateMovie(BaseModel):
     release_date: dt.date
     budget: float
     related_movies: list[str] = []
+    director: str
 
 
 class UpdateMovie(BaseModel):
@@ -24,6 +25,7 @@ class UpdateMovie(BaseModel):
     release_date: Optional[dt.date] = None
     budget: Optional[float] = None
     related_movies: Optional[list[str]] = None
+    director: Optional[str] = None
 
 
 @engine.register_model
