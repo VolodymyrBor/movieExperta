@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-from app.routers import router
+from app.routers import __routers__
 from app.database.engine import engine
 
 
@@ -13,5 +13,6 @@ def create_app() -> FastAPI:
             engine.close,
         ],
     )
-    app.include_router(router=router)
+    for router in __routers__:
+        app.include_router(router)
     return app

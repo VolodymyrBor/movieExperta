@@ -1,5 +1,8 @@
-from datetime import date
+import datetime as dt
+from typing import Optional, Any
+
 from beanie import Document
+from pydantic import BaseModel, validator
 
 from app.database.engine import engine
 
@@ -9,9 +12,29 @@ class Director(Document):
     name: str
 
 
-@engine.register_model
-class Movie(Document):
+class CreateMovie(BaseModel):
     title: str
-    releases_date: date
+    release_date: dt.date
     budget: float
-    related_movies: list[str]
+    related_movies: list[str] = []
+
+
+class UpdateMovie(BaseModel):
+    title: Optional[str] = None
+    release_date: Optional[dt.date] = None
+    budget: Optional[float] = None
+    related_movies: Optional[list[str]] = None
+
+
+@engine.register_model
+class MovieInDB(Document, CreateMovie):
+    release_date: dt.datetime
+
+    @validator('release_date', pre=True)
+    def _to_datetime(cls, value: Any) -> dt.datetime:
+        if isinstance(value, dt.date):
+            return dt.datetime.combine(value, dt.time.min)
+        return value
+
+    class Config:
+        orm_mode = True
