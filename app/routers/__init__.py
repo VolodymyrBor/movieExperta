@@ -1,5 +1,6 @@
-from . import movie
+from . import movie, director
 
 __routers__ = [
     movie.router,
+    director.router,
 ]
