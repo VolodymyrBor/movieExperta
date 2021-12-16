@@ -2,6 +2,7 @@ import datetime as dt
 
 from fastapi import APIRouter
 
+from beanie.operators import Or
 from app.database.models import MovieInDB, DirectorInDB
 
 router = APIRouter(tags=['queries'], prefix='/queries')
@@ -55,3 +56,24 @@ async def get_movies_by_director_country_or_len_related_movies(
     ]
 
     return filtered_movies + filtered_movies_by_directors
+
+
+@router.get('/get_movie_by_release_date_or_director/{director}/{release_date}', response_model=list[MovieInDB])
+async def get_movies_by_director_and_budget(director: str, release_date: dt.date) -> list[MovieInDB]:
+    release_date = dt.datetime.combine(release_date, dt.time.min)
+    queryset = MovieInDB.find_many(
+        Or(
+            MovieInDB.director == director,
+            MovieInDB.release_date == release_date,
+        ),
+    )
+    return await queryset.to_list()
+
+
+@router.get('/movie/avg_budget')
+async def get_movies_by_director_and_budget() -> dict:
+    queryset = MovieInDB.find_all()
+    movies = await queryset.to_list()
+    return {
+        'avg budget': sum(movie.budget for movie in movies) / len(movies)
+    }
