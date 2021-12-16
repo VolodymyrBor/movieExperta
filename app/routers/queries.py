@@ -8,6 +8,7 @@ from app.database.models import MovieInDB, DirectorInDB
 router = APIRouter(tags=['queries'], prefix='/queries')
 
 
+# 2021-09-25 date fmt
 @router.get('/movie_range/{from_dt}/{to_dt}', response_model=list[MovieInDB])
 async def get_movie_range(from_dt: dt.date, to_dt: dt.date) -> list[MovieInDB]:
     from_dt = dt.datetime.combine(from_dt, dt.time.min)
@@ -59,7 +60,7 @@ async def get_movies_by_director_country_or_len_related_movies(
 
 
 @router.get('/get_movie_by_release_date_or_director/{director}/{release_date}', response_model=list[MovieInDB])
-async def get_movies_by_director_and_budget(director: str, release_date: dt.date) -> list[MovieInDB]:
+async def get_movies_by_director_or_release_date(director: str, release_date: dt.date) -> list[MovieInDB]:
     release_date = dt.datetime.combine(release_date, dt.time.min)
     queryset = MovieInDB.find_many(
         Or(
@@ -70,9 +71,10 @@ async def get_movies_by_director_and_budget(director: str, release_date: dt.date
     return await queryset.to_list()
 
 
-@router.get('/movie/avg_budget')
-async def get_movies_by_director_and_budget() -> dict:
-    queryset = MovieInDB.find_all()
+@router.get('/movie/avg_budget/{release_date}')
+async def get_movies_by_director_and_budget(release_date: dt.date) -> dict:
+    release_date = dt.datetime.combine(release_date, dt.time.min)
+    queryset = MovieInDB.find_many(MovieInDB.release_date == release_date)
     movies = await queryset.to_list()
     return {
         'avg budget': sum(movie.budget for movie in movies) / len(movies)

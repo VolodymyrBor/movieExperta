@@ -1,4 +1,5 @@
 import datetime as dt
+from decimal import Decimal
 from typing import Optional, Any
 
 from beanie import Document
@@ -36,7 +37,7 @@ class DirectorInDB(Document, CreateDirector):
 class CreateMovie(BaseModel):
     title: str
     release_date: dt.date
-    budget: float
+    budget: Decimal
     related_movies: list[str] = []
     director: str
 
@@ -44,7 +45,7 @@ class CreateMovie(BaseModel):
 class UpdateMovie(BaseModel):
     title: Optional[str] = None
     release_date: Optional[dt.date] = None
-    budget: Optional[float] = None
+    budget: Optional[Decimal] = None
     related_movies: Optional[list[str]] = None
     director: Optional[str] = None
 
